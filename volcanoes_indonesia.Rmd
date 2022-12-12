@@ -1,0 +1,77 @@
+---
+title: "Volcanoes in Indonesia"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: column
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(leaflet)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(forcats)
+```
+
+Column {data-width=750}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+volcano_data <- read_csv(file = "https://raw.githubusercontent.com/plotly/datasets/master/volcano_db.csv")
+
+indonesia_volcanoes <- volcano_data %>% 
+  select(`Volcano Name`, Country, Region, Latitude, Longitude, Elev) %>% 
+  filter(Country == "Indonesia")
+
+#created popup info and made bold letters and line break
+indonesia_volcanoes <- indonesia_volcanoes %>% 
+  mutate(popup_info = paste("<b>Volcano Name:</b>", `Volcano Name`, "<br/>", 
+                            "<b>Elevation:</b>", Elev, "Meters"))
+
+volcanoIcon <- iconList(volcano = makeIcon("volcano.png", 18))
+
+leaflet() %>% 
+  addProviderTiles("CartoDB.DarkMatter") %>% 
+  addCircleMarkers(data = indonesia_volcanoes, lat = ~ Latitude, 
+                   lng = ~ Longitude, radius = 3, 
+                   popup = ~popup_info, 
+                   color = "red")
+
+```
+
+Column {data-width=250}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+
+
+```
+
+### Chart C
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+volcano_data <- read_csv(file = "https://raw.githubusercontent.com/plotly/datasets/master/volcano_db.csv")
+
+indonesia_volcanoes <- volcano_data %>% 
+  select(`Volcano Name`, Country, Region, Latitude, Longitude, Elev, Type) %>% 
+  filter(Country == "Indonesia")
+
+barplot_volcanoes <- indonesia_volcanoes %>% 
+  mutate(Region = Region %>% fct_infreq() %>% fct_rev()) %>% 
+  ggplot(aes(y = Region)) +
+  geom_bar(aes(fill = Type)) + 
+  theme_dark() 
+barplot_volcanoes
+```
+
