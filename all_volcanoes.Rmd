@@ -7,9 +7,32 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(leaflet)
+library(tidyverse)
+library(dplyr)
+```
 ```
 
 ```{r}
 volcano <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-12/volcano.csv')
+
+indonesia_volcanoes1 <- volcano %>% 
+  filter(country == "Indonesia") 
+
+#created popup info and made bold letters and line break
+indonesia_volcanoes1 <- indonesia_volcanoes1 %>% 
+  mutate(popup_info = paste("<b>Volcano Name:</b>", `volcano_name`, "<br/>",
+                            "<b>Last Eruption:</b>", last_eruption_year, "<br/>",
+                            "<b>Elevation:</b>", elevation, "meters"))
+#created leaflet                            
+leaflet() %>% 
+  addProviderTiles("CartoDB.DarkMatter") %>% 
+  addCircleMarkers(data = indonesia_volcanoes1, 
+                   lat = ~ latitude, 
+                   lng = ~ longitude, radius = 3, 
+                   popup = ~popup_info, 
+                   color = "red")
+                                         
+
 ```
 
