@@ -7,9 +7,34 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(leaflet)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(forcats)
+library(tidyr)
+
 ```
 
 ```{r}
+volcano <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-12/volcano.csv')
+
+indonesia_volcanoes1 <- volcano %>% 
+  filter(country == "Indonesia") 
+
+#select few columns for bar plot, remove plural types and rename type column
+indonesia_volcanoes1_barplot <- indonesia_volcanoes1 %>% 
+  select(subregion, primary_volcano_type) %>% 
+  mutate(primary_volcano_type = str_remove(primary_volcano_type, "\\(.*\\)")) %>% 
+  rename('Volcano Type' = primary_volcano_type) 
+ 
+
+plot <- indonesia_volcanoes1_barplot %>% 
+  ggplot(aes(x = subregion)) +
+  geom_bar(aes(fill = primary_volcano_type))
+                                           
+ggplotly(plot)  
 
 ```
 
