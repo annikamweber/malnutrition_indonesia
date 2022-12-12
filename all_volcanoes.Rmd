@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(leaflet)
 library(tidyverse)
 library(dplyr)
-```
+library(readr)
 ```
 
 ```{r}
@@ -23,7 +23,22 @@ indonesia_volcanoes1 <- volcano %>%
 indonesia_volcanoes1 <- indonesia_volcanoes1 %>% 
   mutate(popup_info = paste("<b>Volcano Name:</b>", `volcano_name`, "<br/>",
                             "<b>Last Eruption:</b>", last_eruption_year, "<br/>",
-                            "<b>Elevation:</b>", elevation, "meters"))
+                            "<b>Elevation:</b>", elevation, "meters", "<br/>", 
+                            "<b>Population size within 5km:</b>", population_within_5_km))
+                            
+#add population in danger zone information (within 5km)
+plot_map <- indonesia_volcanoes1 %>% 
+  mutate(transformed_pop = log2(population_within_5_km + 1), 
+         pop_color = colorNumeric(c("green", "red"), transformed_pop)(transformed_pop)) %>% 
+  leaflet() %>% 
+  addProviderTiles("CartoDB.DarkMatter") %>% 
+  addCircleMarkers(lat = ~ latitude, 
+                   lng = ~ longitude,  
+                   popup = ~popup_info, 
+                   color = ~pop_color, 
+                   radius = 3)
+plot_map
+
 #created leaflet                            
 leaflet() %>% 
   addProviderTiles("CartoDB.DarkMatter") %>% 
@@ -31,7 +46,7 @@ leaflet() %>%
                    lat = ~ latitude, 
                    lng = ~ longitude, radius = 3, 
                    popup = ~popup_info, 
-                   color = "red")
+                   color = ~pop_color)
                                          
 
 ```
