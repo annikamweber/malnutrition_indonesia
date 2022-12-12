@@ -14,7 +14,9 @@ library(ggplot2)
 library(plotly)
 library(forcats)
 library(tidyr)
-
+library(ggthemes)
+library(ggdark)
+library(viridis)
 ```
 
 ```{r}
@@ -24,16 +26,21 @@ volcano <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/ti
 indonesia_volcanoes2 <- volcano %>% 
   filter(country == "Indonesia") %>% 
   select(subregion, primary_volcano_type) %>% 
-  mutate(primary_volcano_type = str_remove(primary_volcano_type, "\\(.*\\)")) 
+  mutate(primary_volcano_type = str_remove(primary_volcano_type, "\\(.*\\)")) %>% 
+  rename(Type = primary_volcano_type, Region = subregion)
  
  
-
+#create plot
 volcano_plot <- indonesia_volcanoes2 %>% 
-  ggplot(aes(x = subregion)) +
-  geom_bar(aes(fill = primary_volcano_type)) +
-  theme(axis.text.x = element_text(angle = 50, hjust = 1)) +
-  ggtitle("Volcano Counts and Types by Region") +
-  labs(x = element_blank(), y = "Number of Volcanoes")
+  mutate(Region = Region %>% fct_infreq()) %>% 
+  ggplot(aes(x = Region)) +
+  geom_bar(aes(fill = Type)) +
+  dark_theme_gray(base_family = "Fira Sans Condensed Light", base_size = 14) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  ggtitle("Number of Volcanoes and Types by Region") +
+  labs(x = element_blank(), y = "Number of Volcanoes", fill = "Volcano Type") + 
+  scale_fill_viridis_d()
+  
   
                                            
 ggplotly(volcano_plot)  
