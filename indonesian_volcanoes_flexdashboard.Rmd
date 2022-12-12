@@ -82,7 +82,7 @@ volcano_plot <- indonesia_volcanoes2 %>%
   theme(axis.text.x = element_text(face = "bold", angle = 60, hjust = 1)) +
   ggtitle("Number of Volcanoes and Types by Region") +
   labs(x = element_blank(), y = "Number of Volcanoes", fill = "Volcano Type") + 
-  scale_fill_viridis_d()
+  scale_fill_viridis_d() 
   
   
                                            
