@@ -2,7 +2,18 @@
 title: "Indonesian Volcanoes"
 output: 
   flexdashboard::flex_dashboard:
-    theme: bootstrap
+    theme: 
+      version: 4
+      bootswatch: sandstone
+      base_font: 
+        google: Prompt
+      heading_font:
+        google: Sen
+      code_font:
+        google: 
+          # arguments to sass::font_google() 
+          family: JetBrains Mono
+          local: false
     orientation: columns
     vertical_layout: fill
 ---
@@ -21,12 +32,14 @@ library(ggdark)
 library(viridis)
 library(leaflet)
 library(readr)
+library(showtext)
+
 ```
 
 Column {data-width=450}
 -----------------------------------------------------------------------
 
-### Chart A
+### Volcanoes in Indonesia and population size within 5km
 
 ```{r}
 volcano <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-12/volcano.csv')
@@ -46,7 +59,7 @@ plot_map <- indonesia_volcanoes1 %>%
   mutate(transformed_pop = log2(population_within_5_km + 1), 
          pop_color = colorNumeric(c("green", "red"), transformed_pop)(transformed_pop)) %>% 
   leaflet() %>% 
-  addProviderTiles("CartoDB.DarkMatter") %>% 
+  addProviderTiles("Stamen.Toner") %>% 
   addCircleMarkers(lat = ~ latitude, 
                    lng = ~ longitude,  
                    popup = ~popup_info, 
@@ -60,10 +73,13 @@ Column {data-width=400}
 -----------------------------------------------------------------------
 
 
-### Chart B
+### Number of Volcanoes and Types by Region  
 
 ```{r}
 volcano <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-12/volcano.csv')
+
+#added font used in flexdashboard to the ggplot bar plot
+font_add_google("Sen", family = "special")
 
 #filter to Indonesia, select few columns for bar plot, remove plural types 
 indonesia_volcanoes2 <- volcano %>% 
@@ -77,10 +93,9 @@ indonesia_volcanoes2 <- volcano %>%
 volcano_plot <- indonesia_volcanoes2 %>% 
   mutate(Region = Region %>% fct_infreq()) %>% 
   ggplot(aes(x = Region)) +
-  geom_bar(aes(fill = Type)) +
-  dark_theme_gray(base_family = "Fira Sans Condensed Light", base_size = 14) +
+  geom_bar(aes(fill = Type), colour="white", alpha = 0.8) +
+  dark_theme_gray(base_size = 14) +
   theme(axis.text.x = element_text(face = "bold", angle = 60, hjust = 1)) +
-  ggtitle("Number of Volcanoes and Types by Region") +
   labs(x = element_blank(), y = "Number of Volcanoes", fill = "Volcano Type") + 
   scale_fill_viridis_d() 
   
