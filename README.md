@@ -1,4 +1,4 @@
 ## README  
 
-Repository for project analyzing malnutrition rates in Indonesia.  
+Repository for project analyzing volcanoes in Indonesia.  
 
