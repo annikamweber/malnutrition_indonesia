@@ -14,29 +14,32 @@ output:
           # arguments to sass::font_google() 
           family: JetBrains Mono
           local: false
-    orientation: columns
-    vertical_layout: fill
+    orientation: columns    
 ---
-# Start
 
-Inputs {.sidebar}  
+Figures
+======================================================================
+
+
+Column {data-width=150}
 -----------------------------------------------------------------------
+### About these figures
 
-
-This is a visualization of volcanoes in Indonesia. The map visualizes all 
+This is a visualization of **volcanoes in Indonesia**. The map shows all 
 volcanoes in Indonesia and the color scale indicates the size of the population 
 living within 5km of the volcano. The more red the volcano, the larger the 
-population living within 5km of the volcano and in a "danger zone". The more 
+population living within 5km of the volcano and in a **"danger zone"**. The more 
 green the volcano, the smaller the population is living within 5km and may be
-less of a danger. Zoom in and click on the volcano to see the volcano name, 
+less of a danger. Zoom in and click on the volcano to see the **volcano name, 
 date of last eruption, elevation of the volcano and population size within 5km 
-of the volcano. 
+of the volcano**. 
 
-The bar plot is visualization of the number of volcanoes
-per region in Indonesia and the types of volcanoes within each region. Hover 
-over the plots to see the counts, region and volcano type. 
+The bar plot is visualization of the **number of volcanoes
+per region** in Indonesia and the types of volcanoes within each region. Hover 
+over the plots to see the **counts, region and volcano type**. 
 
 ```{r setup, include=FALSE}
+library(knitr)
 library(flexdashboard)
 library(leaflet)
 library(tidyverse)
@@ -54,12 +57,12 @@ library(showtext)
 
 ```
 
-Column {data-width=500}
+Column {data-width=425}
 -----------------------------------------------------------------------
 
 ### Volcanoes in Indonesia and population size within 5km
 
-```{r}
+```{r, fig.width=100}
 volcano <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-12/volcano.csv')
 
 indonesia_volcanoes1 <- volcano %>% 
@@ -87,13 +90,13 @@ plot_map
                                          
 ```
 
-Column {data-width=500}
+Column {data-width=425}
 -----------------------------------------------------------------------
 
 
 ### Number of Volcanoes and Types by Region  
 
-```{r}
+```{r, fig.width=25}
 volcano <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-12/volcano.csv')
 
 #added font used in flexdashboard to the ggplot bar plot
@@ -123,8 +126,31 @@ ggplotly(volcano_plot) %>% layout(legend = list("v", x = 0.8, y = 0.3))
 
 ```
 
-Column {.tabset}
------------------------------------------------------------------------
-# About    
 
-The data was 
+About
+======================================================================  
+
+Column {data-width=300} 
+-----------------------------------------------------------------------
+
+
+### About this data 
+
+The data comes from [The Smithsonian Institution](https://volcano.si.edu/) compiled by [Axios](https://www.axios.com/2018/05/31/chart-every-volcano-that-erupted-since-krakatoa), and consists of volcanic eruptions around the world since Krakatoa (after 1883). Data is available on  
+[github.com Tidy Tuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-05-12/readme.md).   
+
+The application is built with [Flexdashboard package](https://rstudio.github.io/flexdashboard/index.html) in [R programming language](https://www.r-project.org/about.html). The map and bar chart are built using R packages for [Leaflet](https://rstudio.github.io/leaflet/), [ggplot2](https://ggplot2.tidyverse.org/), and [Plotly](https://plotly.com/ggplot2/). 
+
+Code for the application is available on [github](https://github.com/annikamweber/volcanoes_indonesia).  
+
+
+
+
+Column {data-width=700} 
+-----------------------------------------------------------------------
+
+```{r, fig.width=10, fig.height=5}
+include_graphics("/Users/annik/R_class_final/malnutrition_indonesia/beautiful_volcano.png")
+```
+
+Image comes from [earth.com](https://www.earth.com/news/why-are-volcanoes-in-indonesia-so-dangerous/)
