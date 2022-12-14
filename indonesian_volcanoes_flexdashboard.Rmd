@@ -17,6 +17,24 @@ output:
     orientation: columns
     vertical_layout: fill
 ---
+# Start
+
+Inputs {.sidebar}  
+-----------------------------------------------------------------------
+
+
+This is a visualization of volcanoes in Indonesia. The map visualizes all 
+volcanoes in Indonesia and the color scale indicates the size of the population 
+living within 5km of the volcano. The more red the volcano, the larger the 
+population living within 5km of the volcano and in a "danger zone". The more 
+green the volcano, the smaller the population is living within 5km and may be
+less of a danger. Zoom in and click on the volcano to see the volcano name, 
+date of last eruption, elevation of the volcano and population size within 5km 
+of the volcano. 
+
+The bar plot is visualization of the number of volcanoes
+per region in Indonesia and the types of volcanoes within each region. Hover 
+over the plots to see the counts, region and volcano type. 
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
@@ -36,7 +54,7 @@ library(showtext)
 
 ```
 
-Column {data-width=450}
+Column {data-width=500}
 -----------------------------------------------------------------------
 
 ### Volcanoes in Indonesia and population size within 5km
@@ -69,7 +87,7 @@ plot_map
                                          
 ```
 
-Column {data-width=400}
+Column {data-width=500}
 -----------------------------------------------------------------------
 
 
@@ -105,10 +123,8 @@ ggplotly(volcano_plot) %>% layout(legend = list("v", x = 0.8, y = 0.3))
 
 ```
 
-Column {data-width=150}
+Column {.tabset}
 -----------------------------------------------------------------------
+# About    
 
-### About these plots  
-
-This is a visualization of volcanoes and their proximity residential areas and a look at 
-volcanoes by region in Indonesia and the different types of volcanoes. 
+The data was 
